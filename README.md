@@ -1,4 +1,4 @@
-django-users
+Users
 ============
 
 Custom user model for django
