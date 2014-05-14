@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.utils import timezone
 
@@ -22,15 +23,20 @@ class CustomUserManager(UserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    date_joined = models.DateTimeField(default=timezone.now)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    email = models.EmailField(unique=True, verbose_name=_('email'))
+    date_joined = models.DateTimeField(default=timezone.now, verbose_name=_('date joined'))
+    is_active = models.BooleanField(default=True, verbose_name=_('active'))
+    is_staff = models.BooleanField(default=False, verbose_name=_('staff status'))
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    class Meta:
+        ordering = ['-date_joined']
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
 
     def __unicode__(self):
         return self.email
